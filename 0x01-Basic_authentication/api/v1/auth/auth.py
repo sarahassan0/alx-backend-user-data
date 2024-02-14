@@ -15,8 +15,8 @@ class Auth:
             returns true if path requires authentication else false.
         """
         if path and excluded_paths and len(excluded_paths) > 0:
-            if path in excluded_paths or path + "/" in excluded_paths\
-                    or path[0:-1] in excluded_paths:
+            if (path in excluded_paths or path + "/" in excluded_paths
+                    or path[0:-1] in excluded_paths):
                 return False
 
         return True
