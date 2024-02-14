@@ -5,6 +5,8 @@
 
 from .auth import Auth
 import base64
+from models.user import User
+from typing import TypeVar
 
 
 class BasicAuth(Auth):
@@ -54,3 +56,46 @@ class BasicAuth(Auth):
             return None, None
 
         return tuple(user_credentials)
+
+    def user_object_from_credentials(self, user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
+        """Get user using email and password"""
+        if user_email is None or not isinstance(user_email, str):
+            return None
+
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+
+        users = User().search({'email': user_email})
+
+        if not users:
+            return None
+
+        user = users[0]
+
+        is_valid_pwd = user.is_valid_password(user_pwd)
+
+        if not is_valid_pwd:
+            return None
+
+        return user
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Get the authorized user"""
+        auth_header = self.authorization_header(request)
+        if not auth_header:
+            return None
+
+        base64_header = self.extract_base64_authorization_header(auth_header)
+        if not base64_header:
+            return None
+
+        decoded_header = self.decode_base64_authorization_header(base64_header)
+        if not decoded_header:
+            return None
+
+        email, password = self.extract_user_credentials(decoded_header)
+        if not email or not password:
+            return None
+
+        return self.user_object_from_credentials(email, password)
