@@ -10,6 +10,7 @@ class BasicAuth(Auth):
     """ BasicAuth Class"""
 
     def __init__(self) -> None:
+        """ initalize BaseAuth class"""
         super().__init__()
 
     def extract_base64_authorization_header(self,
