@@ -7,7 +7,6 @@ from .auth import Auth
 import base64
 
 
-
 class BasicAuth(Auth):
     """ BasicAuth Class"""
 
@@ -24,8 +23,7 @@ class BasicAuth(Auth):
             return None
 
         return authorization_header[6:]
-    
-    
+
     def decode_base64_authorization_header(
             self,
             base64_authorization_header: str
@@ -40,4 +38,19 @@ class BasicAuth(Auth):
             return decoded_bytes.decode('utf-8')
         except UnicodeDecodeError:
             return None
-        
+
+    def extract_user_credentials(
+            self,
+            decoded_base64_authorization_header: str
+            ) -> (str, str):
+        """Extract username and password"""
+        if (decoded_base64_authorization_header is None
+                or not isinstance(decoded_base64_authorization_header, str)):
+            return None, None
+
+        user_credentials = decoded_base64_authorization_header.split(':', 1)
+
+        if len(user_credentials) != 2:
+            return None, None
+
+        return tuple(user_credentials)
