@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    Basic Auth  Mmdule
+    Basic Auth Mmdule
 """
 
 from auth import Auth
