@@ -30,7 +30,7 @@ class BasicAuth(Auth):
             ) -> str:
         """decode base64 header"""
         if (base64_authorization_header is None
-                or type(base64_authorization_header) is not str):
+                or not isinstance(base64_authorization_header, str)):
             return None
 
         try:
