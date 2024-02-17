@@ -27,6 +27,7 @@ def user_login_session() -> str:
     if user is None:
         return jsonify({"error": "no user found for this email"}), 404
 
+    user = user[0]
     is_valid_pwd = user.is_valid_password(password)
 
     if not is_valid_pwd:
@@ -53,5 +54,5 @@ def user_delete_session() -> str:
     from api.v1.app import auth
     if not auth.destroy_session(request):
         abort(404)
-    else:
-        return jsonify({}), 200
+
+    return jsonify({}), 200
