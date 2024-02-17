@@ -3,7 +3,6 @@
 """
 from api.v1.views import app_views
 from flask import abort, jsonify, request
-from models.user import User
 from os import getenv
 
 
@@ -20,9 +19,10 @@ def user_login_session() -> str:
     if email is None or len(email) == 0:
         return jsonify({"error": "email missing"}), 400
     if password is None or len(password) == 0:
-        return jsonify({"error": "password  missing"}), 400
+        return jsonify({"error": "password missing"}), 400
 
-    user = User().search({'email': email})[0]
+    from models.user import User
+    user = User().search({'email': email})
 
     if user is None:
         return jsonify({"error": "no user found for this email"}), 404
