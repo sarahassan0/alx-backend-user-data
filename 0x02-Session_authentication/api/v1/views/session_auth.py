@@ -8,7 +8,7 @@ from os import getenv
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-def user_session() -> str:
+def user_login_session() -> str:
     """ POST /auth_session/login
     Return:
       - User object JSON represented
@@ -39,3 +39,19 @@ def user_session() -> str:
         res = jsonify(user.to_json())
         res.set_cookie(SESSION_NAME, session_id)
         return res
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def user_delete_session() -> str:
+    """ DELETE /api/v1/auth_session/logout
+    Return:
+      - empty object JSON represented
+      - error if there's no session
+    """
+
+    from api.v1.app import auth
+    if not auth.destroy_session(request):
+        abort(404)
+    else:
+        return jsonify({}), 200
