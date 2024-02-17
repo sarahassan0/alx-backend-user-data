@@ -46,7 +46,6 @@ def before_request():
                 and not auth.session_cookie(request)):
             abort(401)
         if not auth.current_user(request):
-            print("LLLLLL")
             abort(403)
         else:
             request.current_user = auth.current_user(request)
