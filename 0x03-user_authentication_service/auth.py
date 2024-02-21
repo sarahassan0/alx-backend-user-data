@@ -37,7 +37,7 @@ class Auth:
             return False
 
     def create_session(self, email: str) -> str:
-        """Validate user's email and password to login it """
+        """Generates seesion of user """
         try:
             user = self._db.find_user_by(email=email)
             user.session_id = _generate_uuid()
