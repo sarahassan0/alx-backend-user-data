@@ -40,9 +40,9 @@ class Auth:
         """Generates seesion of user """
         try:
             user = self._db.find_user_by(email=email)
-            user.session_id = _generate_uuid()
-            self._db._session.commit()
-            return user.session_id
+            session_id = _generate_uuid()
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
         except NoResultFound:
             return None
 
